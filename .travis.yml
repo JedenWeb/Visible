@@ -1,0 +1,22 @@
+language: php
+
+php:
+  - 7.1
+
+cache:
+    directories:
+        - $HOME/.composer/cache
+
+before_install:
+  - travis_retry composer self-update
+
+install:
+  - travis_retry composer update --no-interaction
+
+script:
+  - vendor/bin/phpstan analyse -c phpstan.neon -l5 src/
+  - vendor/bin/phpcs --standard=ruleset.xml --extensions=php --encoding=utf-8 --tab-width=4 -sp src/
+  - vendor/bin/tester tests/
+
+after_failure:
+  - 'for i in $(find ./tests -name \*.actual); do echo "--- $i"; cat $i; echo; echo; done'

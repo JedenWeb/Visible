@@ -1,0 +1,41 @@
+{
+    "name": "jedenweb/visible",
+    "type": "library",
+    "description": "Visibility management of Doctrine entities in Nette",
+    "keywords": ["nette", "doctrine", "visibility"],
+    "license": ["BSD-3-Clause", "GPL-2.0", "GPL-3.0"],
+    "require": {
+        "kdyby/doctrine": "^3.1",
+        "nette/application": "^2.4",
+        "nette/di": "^2.4",
+        "nextras/secured-links": "^1.4",
+        "kdyby/autowired": "^1.4"
+    },
+    "require-dev": {
+        "nette/tester": "^1.7",
+        "phpstan/phpstan": "^0.6.4",
+        "phpstan/phpstan-nette": "^0.6.3",
+        "phpstan/phpstan-doctrine": "^0.6.1",
+        "consistence/coding-standard": "^0.13.0",
+        "slevomat/coding-standard": "^2.0",
+        "mockery/mockery": "^0.9.9",
+        "tracy/tracy": "^2.4",
+        "jedenweb/tester-utils": "^1.1",
+        "latte/latte": "^2.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "JedenWeb\\Visible\\": "src/"
+        }
+    },
+    "scripts": {
+        "phpcs": "vendor/bin/phpcs --standard=ruleset.xml --extensions=php --encoding=utf-8 --tab-width=4 -sp src/ tests/src/",
+        "phpstan": "vendor/bin/phpstan analyse -c phpstan.neon -l5 src/ tests/src/ --ansi",
+        "tester": "vendor/bin/tester tests/",
+        "all": [
+            "@phpstan",
+            "@phpcs",
+            "@tester"
+        ]
+    }
+}

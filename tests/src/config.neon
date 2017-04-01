@@ -1,0 +1,23 @@
+extensions:
+	visible: JedenWeb\Visible\DI\VisibleExtension
+	- Kdyby\Console\DI\ConsoleExtension
+	- Kdyby\Annotations\DI\AnnotationsExtension
+	events: Kdyby\Events\DI\EventsExtension
+	doctrine: Kdyby\Doctrine\DI\OrmExtension
+
+application:
+	mapping:
+		*: Tests\JedenWeb\VIsible\Control\*Module\*Presenter
+
+doctrine:
+	user: root
+	password: root
+	dbname: sandbox
+	metadata:
+		App: %appDir%
+
+events:
+	debugger: false
+
+services:
+	routing.router: Nette\Application\Routers\SimpleRouter('Homepage:default')
