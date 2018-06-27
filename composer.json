@@ -13,9 +13,9 @@
     },
     "require-dev": {
         "nette/tester": "^1.7",
-        "phpstan/phpstan": "^0.6.4",
-        "phpstan/phpstan-nette": "^0.6.3",
-        "phpstan/phpstan-doctrine": "^0.6.1",
+        "phpstan/phpstan": "^0.10",
+        "phpstan/phpstan-nette": "^0.10",
+        "phpstan/phpstan-doctrine": "^0.10",
         "consistence/coding-standard": "^0.13.0",
         "slevomat/coding-standard": "^2.0",
         "mockery/mockery": "^0.9.9",
