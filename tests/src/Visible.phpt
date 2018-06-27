@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: JedenWeb\Visible\Visible.
@@ -11,7 +11,6 @@ namespace Tests\JedenWeb\Visible;
 
 use JedenWeb\Visible\IVisible;
 use JedenWeb\Visible\TVisible;
-use Nette;
 use Tester;
 use Tester\Assert;
 

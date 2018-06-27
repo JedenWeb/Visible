@@ -66,6 +66,10 @@ class VisibilityToggle extends Control
 
 	public function setTemplateFile(string $templateFile): void
 	{
+		if (strpos($templateFile, DIRECTORY_SEPARATOR) === false) {
+			$templateFile = __DIR__ . DIRECTORY_SEPARATOR . $templateFile;
+		}
+
 		$this->templateFile = $templateFile;
 	}
 

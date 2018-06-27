@@ -8,6 +8,9 @@ use Nette\Application\UI\Multiplier;
 trait TVisibilityTogglePresenter
 {
 
+	/** @var string|null */
+	protected $visibilityTemplateFile;
+
 	/**
 	 * @param mixed $id
 	 */
@@ -16,7 +19,11 @@ trait TVisibilityTogglePresenter
 	protected function createComponentVisibilityToggle(IVisibilityToggle $factory): Multiplier
 	{
 		return new Multiplier(function ($id) use ($factory) {
-			return $factory->create($this->getTarget($id));
+			$component = $factory->create($this->getTarget($id));
+			if ($this->visibilityTemplateFile !== null) {
+				$component->setTemplateFile($this->visibilityTemplateFile);
+			}
+			return $component;
 		});
 	}
 

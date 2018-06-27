@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: JedenWeb\Visible\Control\VisibilityToggle.
@@ -69,6 +69,18 @@ class BPresenter extends APresenter
 
 }
 
+class CPresenter extends APresenter
+{
+
+	public function __construct()
+	{
+		parent::__construct();
+
+		$this->visibilityTemplateFile = 'VisibilityToggle.feather.latte';
+	}
+
+}
+
 /**
  * @author Pavel Jurásek
  */
@@ -116,6 +128,28 @@ class VisibilityToggleTest extends Tester\TestCase
 
 		Assert::matchFile(__DIR__ . '/render/custom.html', $output);
     }
+
+	public function testChangeFactoryTemplate()
+	{
+		$this->openPresenter('C:');
+
+		$entityManager = \Mockery::mock(EntityManager::class);
+		$entityManager->shouldReceive('flush')
+			->once();
+
+		/** @var VisibilityToggle $control */
+		$control = $this->presenter['visibilityToggle-1'];
+
+		ob_start();
+		$control->render();
+		$output = ob_get_clean();
+
+		Assert::matchFile(__DIR__ . '/render/feather.html', $output);
+
+		Assert::exception(function () use ($control) {
+			$control->handleToggleVisibility();
+		}, Nette\Application\AbortException::class);
+	}
 
 	/***/
 	public function testSecured()
