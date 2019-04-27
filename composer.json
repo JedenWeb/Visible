@@ -4,29 +4,37 @@
     "description": "Visibility management of Doctrine entities in Nette",
     "keywords": ["nette", "doctrine", "visibility"],
     "license": ["BSD-3-Clause", "GPL-2.0", "GPL-3.0"],
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/paveljurasek/autowired"
+        }
+    ],
     "require": {
-        "kdyby/doctrine": "^3.1",
-        "nette/application": "^2.4|^3.0",
-        "nette/di": "^2.4|^3.0",
-        "nextras/secured-links": "^1.4",
-        "kdyby/autowired": "^1.4"
+        "doctrine/orm": "^2.6",
+        "nette/application": "^3.0",
+        "nette/di": "^3.0",
+        "kdyby/autowired": "^1.5"
     },
     "require-dev": {
-        "nette/tester": "^1.7",
+        "nette/tester": "^2.2",
         "phpstan/phpstan": "^0.10",
         "phpstan/phpstan-nette": "^0.10",
         "phpstan/phpstan-doctrine": "^0.10",
         "consistence/coding-standard": "^0.13.0",
         "slevomat/coding-standard": "^2.0",
         "mockery/mockery": "^0.9.9",
-        "tracy/tracy": "^2.4",
-        "jedenweb/tester-utils": "^1.1",
-        "latte/latte": "^2.4"
+        "tracy/tracy": "^2.6",
+        "latte/latte": "^2.5"
     },
+    "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
             "JedenWeb\\Visible\\": "src/"
         }
+    },
+    "suggest": {
+        "nextras/secured-links": "Secure signals."
     },
     "scripts": {
         "phpcs": "vendor/bin/phpcs --standard=ruleset.xml --extensions=php --encoding=utf-8 --tab-width=4 -sp src/ tests/src/",
