@@ -12,7 +12,7 @@ class VisibleExtension extends CompilerExtension
 	{
 		$container = $this->getContainerBuilder();
 
-		$container->addDefinition($this->prefix('toggle'))
+		$container->addFactoryDefinition($this->prefix('toggle'))
 			->setImplement(IVisibilityToggle::class);
 	}
 

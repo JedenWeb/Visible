@@ -1,23 +1,32 @@
+parameters:
+	connection:
+		host: 127.0.0.1
+		port: 3306
+		user: root
+		password: root
+
+	console.url: http://localhost
+
 extensions:
 	visible: JedenWeb\Visible\DI\VisibleExtension
-	- Kdyby\Console\DI\ConsoleExtension
-	- Kdyby\Annotations\DI\AnnotationsExtension
-	events: Kdyby\Events\DI\EventsExtension
-	doctrine: Kdyby\Doctrine\DI\OrmExtension
 
 application:
 	mapping:
-		*: Tests\JedenWeb\VIsible\Control\*Module\*Presenter
-
-doctrine:
-	user: root
-	password: root
-	dbname: sandbox
-	metadata:
-		App: %appDir%
-
-events:
-	debugger: false
+		*: Tests\JedenWeb\VIsible\Control\*Presenter
 
 services:
 	routing.router: Nette\Application\Routers\SimpleRouter('Homepage:default')
+	- Doctrine\Common\EventManager
+	- Doctrine\DBAL\Driver\PDOMySql\Driver
+	- Doctrine\DBAL\Connection(%connection%)
+	- Doctrine\Common\Annotations\AnnotationReader
+	- Doctrine\ORM\Mapping\Driver\AnnotationDriver(@Doctrine\Common\Annotations\AnnotationReader)
+	-
+		class: Doctrine\ORM\Configuration
+		setup:
+			- setMetadataDriverImpl()
+			- setProxyDir(%tempDir%)
+			- setProxyNamespace('Tests')
+	-
+		type: Doctrine\ORM\EntityManager
+		factory: Doctrine\ORM\EntityManager::create(@Doctrine\DBAL\Connection)

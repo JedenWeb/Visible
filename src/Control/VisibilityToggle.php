@@ -2,8 +2,8 @@
 
 namespace JedenWeb\Visible\Control;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use JedenWeb\Visible\IVisible;
-use Kdyby\Doctrine\EntityManager;
 use Nette\Application\UI\Control;
 use Nextras\Application\UI\SecuredLinksControlTrait;
 
@@ -17,28 +17,26 @@ class VisibilityToggle extends Control
 	/** @var IVisible */
 	private $target;
 
-	/** @var EntityManager */
+	/** @var ObjectManager */
 	private $entityManager;
 
 	/** @var string */
 	private $templateFile = __DIR__ . '/VisibilityToggle.latte';
 
-	public function __construct(IVisible $target, EntityManager $entityManager)
+	public function __construct(IVisible $target, ObjectManager $entityManager)
 	{
-		parent::__construct();
-
 		$this->target = $target;
 		$this->entityManager = $entityManager;
 	}
 
 	// @codingStandardsIgnoreLine
-	public function link($destination, $args = [])
+	public function link(string $destination, $args = []): string
 	{
 		if (method_exists($this->getPresenter(), 'createSecuredLink')) {
 			return $this->securedLink($destination, $args);
-		} else {
-			return parent::link($destination, $args);
 		}
+
+		return parent::link($destination, $args);
 	}
 
 	/**

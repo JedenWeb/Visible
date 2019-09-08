@@ -9,77 +9,22 @@
 
 namespace Tests\JedenWeb\Visible\Control;
 
+use Doctrine\ORM\EntityManager;
 use JedenWeb\TesterUtils\CompiledContainer;
 use JedenWeb\TesterUtils\PresenterRunner;
 use JedenWeb\Visible\Control\VisibilityToggle;
-use JedenWeb\Visible\IVisible;
-use JedenWeb\Visible\TVisibilityTogglePresenter;
-use JedenWeb\Visible\TVisible;
-use Kdyby\Autowired\AutowireComponentFactories;
-use Kdyby\Doctrine\EntityManager;
 use Nette;
 use Nette\Application\Request;
-use Nette\DI\Container;
-use Nextras\Application\UI\SecuredLinksPresenterTrait;
+use Nette\Application\UI\Control;
+use Nette\Application\UI\Presenter;
 use Tester;
 use Tester\Assert;
 
 require_once __DIR__ . '/../../bootstrap.php';
-
-class Entity implements IVisible
-{
-
-	use TVisible;
-
-	public function getId()
-	{
-		return 1;
-	}
-
-}
-
-class APresenter extends Nette\Application\UI\Presenter
-{
-
-	use AutowireComponentFactories;
-	use TVisibilityTogglePresenter;
-
-	private $registry = [];
-
-	protected function getTarget($id): IVisible
-	{
-		if (!in_array($id, $this->registry)) {
-			$this->registry[$id] = new Entity;
-		}
-
-		return $this->registry[$id];
-	}
-
-	protected function beforeRender()
-	{
-		$this->terminate();
-	}
-
-}
-
-class BPresenter extends APresenter
-{
-
-	use SecuredLinksPresenterTrait;
-
-}
-
-class CPresenter extends APresenter
-{
-
-	public function __construct()
-	{
-		parent::__construct();
-
-		$this->visibilityTemplateFile = 'VisibilityToggle.feather.latte';
-	}
-
-}
+require_once __DIR__ . '/../../src/Entity.php';
+require_once __DIR__ . '/../../src/presenters.php';
+require_once __DIR__ . '/../../CompiledContainer.php';
+require_once __DIR__ . '/../../PresenterRunner.php';
 
 /**
  * @author Pavel Jurásek
@@ -92,7 +37,7 @@ class VisibilityToggleTest extends Tester\TestCase
 	}
 	use PresenterRunner;
 
-	protected function createContainer(array $configs = []): Container
+	protected function createContainer(array $configs = []): Nette\DI\Container
 	{
 		return $this->parentCreateContainer([
 			__DIR__ . '/../config.neon',
@@ -151,12 +96,11 @@ class VisibilityToggleTest extends Tester\TestCase
 		}, Nette\Application\AbortException::class);
 	}
 
-	/***/
 	public function testSecured()
 	{
 		$this->openPresenter('B:');
 
-		$refl = new \ReflectionProperty(Nette\Application\UI\Presenter::class, 'ajaxMode');
+		$refl = new \ReflectionProperty(Presenter::class, 'ajaxMode');
 		$refl->setAccessible(true);
 		$refl->setValue($this->presenter, true);
 
@@ -172,11 +116,11 @@ class VisibilityToggleTest extends Tester\TestCase
 
 		$this->openPresenter('B:');
 
-		$refl = new \ReflectionProperty(Nette\Application\UI\Presenter::class, 'ajaxMode');
+		$refl = new \ReflectionProperty(Presenter::class, 'ajaxMode');
 		$refl->setAccessible(true);
 		$refl->setValue($this->presenter, true);
 
-		$refl = new \ReflectionProperty(Nette\Application\UI\Control::class, 'params');
+		$refl = new \ReflectionProperty(Control::class, 'params');
 		$refl->setAccessible(true);
 		$refl->setValue($control, $refl->getValue($control) + [
 			'_sec' => $token,
@@ -190,18 +134,7 @@ class VisibilityToggleTest extends Tester\TestCase
 
 		$response = $this->presenter->run($request);
 
-		Assert::null($response); // why?!
-	}
-
-	protected function getPresenter($name): Nette\Application\UI\Presenter
-	{
-		$presenter = $this->getContainer()
-			->getByType('Nette\Application\IPresenterFactory')
-			->createPresenter($name);
-
-		$presenter->autoCanonicalize = FALSE;
-
-		return $presenter;
+		Assert::type(Nette\Application\IResponse::class, $response);
 	}
 
 }

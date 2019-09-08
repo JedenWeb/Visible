@@ -2,6 +2,10 @@ parameters:
 	excludes_analyse:
 		- %rootDir%/../../../src/PHPStan/*
 
+	autoload_files:
+		- %rootDir%/../../../tests/src/Entity.php
+		- %rootDir%/../../../tests/src/presenters.php
+
 	ignoreErrors:
 
 includes:

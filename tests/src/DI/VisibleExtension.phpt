@@ -10,7 +10,6 @@
 namespace Tests\JedenWeb\Visible\DI;
 
 use JedenWeb\Visible\Control\IVisibilityToggle;
-use JedenWeb\Visible\Control\VisibilityToggle;
 use Nette;
 use Tester;
 use Tester\Assert;
